@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.controllers.customer_controller import create_customer, get_customer, delete_customer
 from app.models import Customer
-from utils.security import oauth2_scheme
+from app.utils.security import oauth2_scheme
 
 # Instancia de APIRouter
 customer_router = APIRouter()
