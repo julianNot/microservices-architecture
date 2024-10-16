@@ -6,9 +6,9 @@ services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: loginDB
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -23,7 +23,36 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - redis_data:/data 
+      - redis_data:/data
+
+  # ms_login:
+  ms_login:
+    container_name: ms_login
+    build:
+      context: ./ms_login
+      dockerfile: Dockerfile  
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=loginDB
+      - DB_HOST=postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - company
+    
+  # ms_user_mgmt
+  ms_user_mgmt:
+    container_name: ms_user_mgmt
+    build:
+      context: ./ms_user_mgmt
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - company
 
 volumes:
   postgres_data:
