@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: order-route
+          uri: http://localhost:3001
+          predicates:
+            - Path=/order/**
