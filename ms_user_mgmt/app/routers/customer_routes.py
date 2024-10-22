@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from app.controllers.customer_controller import create_customer, get_customer, delete_customer
+from app.controllers.customer_controller import create_customer, get_all_customers, get_customer, delete_customer
 from app.models import Customer
 from app.utils.security import oauth2_scheme
 
@@ -20,3 +20,8 @@ async def findcustomerbyid(document: str, token: str = Depends(oauth2_scheme)):
 @customer_router.delete("/customers/{document}")
 async def deletecustomer(document: str, token: str = Depends(oauth2_scheme)):
     return await delete_customer(document)
+
+# Ruta para obtener todos los clientes
+@customer_router.get("/customers/")
+async def findallcustomers(token: str = Depends(oauth2_scheme)):
+    return await get_all_customers()

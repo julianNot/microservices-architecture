@@ -40,3 +40,19 @@ async def delete_customer(document: str):
     # Eliminar el cliente
     r.delete(key)
     return {"message": "Customer deleted successfully"}
+
+
+async def get_all_customers():
+    # Obtener todas las claves que coincidan con el patrón "customer:*"
+    all_keys = r.keys("customer:*")
+    
+    # Lista para almacenar todos los clientes
+    customers = []
+    
+    # Obtener los datos de cada cliente
+    for key in all_keys:
+        customer_data = r.hgetall(key)
+        if customer_data:  # Verificar que el cliente existe
+            customers.append(customer_data)
+    
+    return customers
